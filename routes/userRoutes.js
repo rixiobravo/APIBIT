@@ -10,7 +10,7 @@ const api = express.Router();
 // req: son los parametros que se envian por la URL.
 // res: respuestas que tenemos.
 api.get('/saludo', (req, res) => {
-    res.send('Hola a todos');
+    console.log('Hola a todos');
 });
 
 api.post('/', UserController.create);
@@ -21,6 +21,8 @@ api.delete('/:idUser', UserController.remove);
 
 api.post('/login', UserController.login);
 
-api.get('/userByRole/:role', UserController.getUser);
+api.get('/allUser', UserController.getAllUsers);
+
+api.get('/getUser/:id', UserController.getUser);
 
 module.exports = api;

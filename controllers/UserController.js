@@ -17,8 +17,9 @@ function create(req, res){
     user.password = params.password;
     user.role = params.role;
 
+    console.log(user);
 
-    User.save( (error, usercreated) => {
+    user.save( (error, usercreated) => {
         if (error){
             res.status(500).send({
                 statusCode: 500,
@@ -61,7 +62,7 @@ function update(req, res){
                 res.send({
                     statusCode: 200,
                     message: "Usuario actualizado correctamente",
-                    dataUser: userUpdated,
+                    message: "Exito",
                 })
             }
         }
@@ -90,6 +91,25 @@ function remove(req, res){
                 })
             }
         }  
+    })
+};
+
+function getAllUsers(req, res) {
+    //var role = req.params.role;
+
+    User.find({  }, (error, allUsers) => {
+        if (error) {
+            res.status(500).send({
+                statusCode: 500,
+                message: "Error en el servidor"
+            })
+        } else {
+            res.status(200).send({
+                statusCode: 200,
+                message: "Todos los usuarios",
+                allUsers: allUsers
+            })
+        }
     })
 };
 
@@ -126,15 +146,18 @@ function login(req,res) {
 };
 
 function getUser(req, res){
-    var role = req.params.role;
-    
-    User.find({ role: role }, (error, allUser) => {
-        if(error) {
-            
+    let idUser = req.params.id;
+    User.findById(idUser, (error, dataUser) => {
+        if (error) {
+            res.status(500).send({
+                statusCode: 500,
+                message: "Error en el servidor"
+            })
         } else {
-            res.send({
-                message: "Tdos los Administradores",
-                dataUser: allUser
+            res.status(200).send({
+                statusCode: 200,
+                message: "Todos los usuarios",
+                dataUser: dataUser
             })
         }
     })
@@ -145,6 +168,6 @@ module.exports ={
     update,
     remove,
     login,
-    getUser
-    
+    getUser,
+    getAllUsers
 }
